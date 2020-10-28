@@ -46,10 +46,18 @@ interface DataValidationCxt {
 export interface ValidateFunction<T = unknown> {
   (this: Ajv | any, data: any, dataCxt?: DataValidationCxt): data is T
   errors?: null | ErrorObject[]
+  props?: EvaluatedProperties
+  staticProps?: boolean // true determined at compile time
+  items?: EvaluatedItems
+  staticItems?: boolean // true determined at compile time
   schema: AnySchema
   schemaEnv: SchemaEnv
   source?: SourceCode
 }
+
+export type EvaluatedProperties = Record<string, true | undefined> | true
+
+export type EvaluatedItems = number | true
 
 export interface AsyncValidateFunction<T = unknown> extends ValidateFunction<T> {
   (...args: Parameters<ValidateFunction<T>>): Promise<T>
